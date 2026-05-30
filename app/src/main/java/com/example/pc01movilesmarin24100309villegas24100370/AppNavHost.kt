@@ -7,9 +7,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pc01movilesmarin24100309villegas24100370.screens.BaggageCalculatorScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.BudgetPlannerScreen
-import com.example.pc01movilesmarin24100309villegas24100370.screens.FeatureScreen
-import com.example.pc01movilesmarin24100309villegas24100370.screens.MainMenuScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.DestinationsCatalogScreen
+import com.example.pc01movilesmarin24100309villegas24100370.screens.LocationPermissionScreen
+import com.example.pc01movilesmarin24100309villegas24100370.screens.MainMenuScreen
 
 private object AppRoute {
     const val MainMenu = "main_menu"
@@ -55,8 +55,7 @@ fun AppNavHost() {
         }
 
         composable(AppRoute.LocationPermission) {
-            FeatureScreen(
-                title = stringResource(R.string.menu_location_permission),
+            LocationPermissionScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

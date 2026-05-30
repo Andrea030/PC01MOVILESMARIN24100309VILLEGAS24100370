@@ -1,15 +1,5 @@
 package com.example.pc01movilesmarin24100309villegas24100370.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,17 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BaggageCalculatorScreen(onBackClick: () -> Unit) {
 import com.example.pc01movilesmarin24100309villegas24100370.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BaggageCalculatorScreen(
-    onBackClick: () -> Unit
-) {
+fun BaggageCalculatorScreen(onBackClick: () -> Unit) {
     var weightInput by remember { mutableStateOf("") }
     var flightType by remember { mutableStateOf("Nacional") }
     val flightOptions = listOf("Nacional", "Internacional")
@@ -67,13 +51,7 @@ fun BaggageCalculatorScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Calculadora de Equipaje") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
-                    }
-                }
-                title = { Text(text = "Calculadora de Equipaje") }
+                title = { Text(text = stringResource(R.string.baggage_calculator_title)) }
             )
         }
     ) { innerPadding ->
@@ -168,14 +146,14 @@ fun BaggageCalculatorScreen(
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(56.dp)
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Calcular")
             }
 
-            // Resultados
+            // Mostrar Resultados
             if (resultMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -183,16 +161,6 @@ fun BaggageCalculatorScreen(
                             MaterialTheme.colorScheme.errorContainer
                         else
                             MaterialTheme.colorScheme.primaryContainer
-            if (resultMessage != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (isExceeded) {
-                            MaterialTheme.colorScheme.errorContainer
-                        } else {
-                            MaterialTheme.colorScheme.primaryContainer
-                        }
                     )
                 ) {
                     Column(
@@ -213,11 +181,8 @@ fun BaggageCalculatorScreen(
                     }
                 }
             }
-        }
-    }
-}
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Button(
                 onClick = onBackClick,
                 modifier = Modifier.fillMaxWidth()
