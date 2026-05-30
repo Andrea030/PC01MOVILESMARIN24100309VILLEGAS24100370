@@ -4,13 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.pc01movilesmarin24100309villegas24100370.ui.theme.PC01MOVILESMARIN24100309VILLEGAS24100370Theme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +12,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PC01MOVILESMARIN24100309VILLEGAS24100370Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavHost()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PC01MOVILESMARIN24100309VILLEGAS24100370Theme {
-        Greeting("Android")
-    }
-}
