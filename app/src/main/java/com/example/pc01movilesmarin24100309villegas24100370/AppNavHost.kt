@@ -9,6 +9,7 @@ import com.example.pc01movilesmarin24100309villegas24100370.screens.BaggageCalcu
 import com.example.pc01movilesmarin24100309villegas24100370.screens.BudgetPlannerScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.FeatureScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.MainMenuScreen
+import com.example.pc01movilesmarin24100309villegas24100370.screens.DestinationsCatalogScreen
 
 private object AppRoute {
     const val MainMenu = "main_menu"
@@ -48,8 +49,7 @@ fun AppNavHost() {
         }
 
         composable(AppRoute.DestinationsCatalog) {
-            FeatureScreen(
-                title = stringResource(R.string.menu_destinations_catalog),
+            DestinationsCatalogScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
