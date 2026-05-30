@@ -2,18 +2,17 @@ package com.example.pc01movilesmarin24100309villegas24100370.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.style.TextAlign
+import com.example.pc01movilesmarin24100309villegas24100370.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,12 +35,7 @@ fun BudgetPlannerScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Planificador de Presupuesto") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
-                    }
-                }
+                title = { Text(text = stringResource(R.string.budget_planner_title)) }
             )
         }
     ) { innerPadding ->
@@ -110,7 +104,9 @@ fun BudgetPlannerScreen(onBackClick: () -> Unit) {
                     label = { Text("Tipo de alojamiento") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                    modifier = Modifier
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                        .fillMaxWidth()
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
@@ -158,7 +154,9 @@ fun BudgetPlannerScreen(onBackClick: () -> Unit) {
                         totalBudget = null
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(56.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
             ) {
                 Text("Calcular Presupuesto Total")
             }
@@ -194,6 +192,14 @@ fun BudgetPlannerScreen(onBackClick: () -> Unit) {
                         )
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(
+                onClick = onBackClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.back_to_menu))
             }
         }
     }

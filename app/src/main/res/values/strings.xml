@@ -5,7 +5,10 @@
     <string name="menu_budget_planner">Planificador de Presupuesto de Viaje</string>
     <string name="menu_destinations_catalog">Catálogo de Destinos Turísticos</string>
     <string name="menu_location_permission">Permiso de Ubicación para Asistencia de Viaje</string>
+    <string name="baggage_calculator_title">Calculadora de Equipaje</string>
+    <string name="budget_planner_title">Planificador de Presupuesto de Viaje</string>
     <string name="destinations_catalog_title">Catálogo de Destinos Turísticos</string>
+    <string name="location_permission_title">Permisos de Ubicación para Asistencia de Viaje</string>
     <string name="placeholder_description">Pantalla de %1$s en construcción.</string>
     <string name="back_to_menu">Volver al menú</string>
 </resources>
