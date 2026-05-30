@@ -26,6 +26,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PC01MOVILESMARIN24100309VILLEGAS24100370Theme {
+                AppNavHost()
+            }
+        }
+    }
+}
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     BaggageCalculatorScreen(modifier = Modifier.padding(innerPadding))
                 }
