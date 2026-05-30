@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.pc01movilesmarin24100309villegas24100370.R
-//hola
+//hola1
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenuScreen(
