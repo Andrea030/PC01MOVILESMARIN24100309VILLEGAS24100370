@@ -3,28 +3,19 @@ package com.example.pc01movilesmarin24100309villegas24100370.screens
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.GpsFixed
+import androidx.compose.material.icons.filled.LocationOff
+import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,21 +34,29 @@ sealed class PermissionStatus {
 fun LocationPermissionScreen(onBackClick: () -> Unit) {
     var permissionStatus by remember { mutableStateOf<PermissionStatus>(PermissionStatus.Pending) }
 
-    // Activity Result Contract para solicitar permiso de ubicación
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        permissionStatus = if (isGranted) {
-            PermissionStatus.Granted
-        } else {
-            PermissionStatus.Denied
-        }
+        permissionStatus = if (isGranted) PermissionStatus.Granted else PermissionStatus.Denied
     }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.location_permission_title)) }
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.location_permission_title),
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
+                    }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             )
         }
     ) { innerPadding ->
@@ -65,115 +64,148 @@ fun LocationPermissionScreen(onBackClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)
+                        )
+                    )
+                )
                 .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Surface(
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier.size(80.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.MyLocation,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(20.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
-                text = "Permisos de Ubicación para Asistencia de Viaje",
-                fontSize = 24.sp,
+                text = "Permisos de Ubicación",
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 16.dp)
+                textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = "Para ofrecerte una mejor asistencia durante tu viaje, necesitamos acceso a tu ubicación actual.",
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 24.dp)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            // Card mostrando el estado del permiso
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = when (permissionStatus) {
-                        is PermissionStatus.Granted -> MaterialTheme.colorScheme.primaryContainer
-                        is PermissionStatus.Denied -> MaterialTheme.colorScheme.errorContainer
-                        is PermissionStatus.Pending -> MaterialTheme.colorScheme.surfaceVariant
-                    }
-                )
+            Spacer(modifier = Modifier.height(32.dp))
+
+            StatusCard(permissionStatus)
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Button(
+                    onClick = { requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    enabled = permissionStatus !is PermissionStatus.Granted
                 ) {
-                    Text(
-                        text = when (permissionStatus) {
-                            is PermissionStatus.Granted -> "✓ Permiso Concedido"
-                            is PermissionStatus.Denied -> "✗ Permiso Denegado"
-                            is PermissionStatus.Pending -> "⏳ Permiso Pendiente"
-                        },
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = when (permissionStatus) {
-                            is PermissionStatus.Granted -> MaterialTheme.colorScheme.onPrimaryContainer
-                            is PermissionStatus.Denied -> MaterialTheme.colorScheme.onErrorContainer
-                            is PermissionStatus.Pending -> MaterialTheme.colorScheme.onSurfaceVariant
-                        }
-                    )
+                    Icon(Icons.Default.GpsFixed, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Ubicación Precisa")
+                }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                OutlinedButton(
+                    onClick = { requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION) },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    enabled = permissionStatus !is PermissionStatus.Granted
+                ) {
+                    Text("Ubicación Aproximada")
+                }
 
-                    Text(
-                        text = when (permissionStatus) {
-                            is PermissionStatus.Granted -> "Se permite acceso a tu ubicación precisa para obtener asistencia personalizada de viaje."
-                            is PermissionStatus.Denied -> "El permiso fue denegado. Puedes cambiar esto en Configuración > Permisos."
-                            is PermissionStatus.Pending -> "Por favor, selecciona una opción abajo para solicitar acceso a tu ubicación."
-                        },
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center,
-                        color = when (permissionStatus) {
-                            is PermissionStatus.Granted -> MaterialTheme.colorScheme.onPrimaryContainer
-                            is PermissionStatus.Denied -> MaterialTheme.colorScheme.onErrorContainer
-                            is PermissionStatus.Pending -> MaterialTheme.colorScheme.onSurfaceVariant
-                        }
-                    )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                TextButton(
+                    onClick = onBackClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = stringResource(R.string.back_to_menu))
                 }
             }
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(24.dp))
+@Composable
+fun StatusCard(status: PermissionStatus) {
+    val containerColor = when (status) {
+        is PermissionStatus.Granted -> MaterialTheme.colorScheme.primaryContainer
+        is PermissionStatus.Denied -> MaterialTheme.colorScheme.errorContainer
+        is PermissionStatus.Pending -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    
+    val contentColor = when (status) {
+        is PermissionStatus.Granted -> MaterialTheme.colorScheme.onPrimaryContainer
+        is PermissionStatus.Denied -> MaterialTheme.colorScheme.onErrorContainer
+        is PermissionStatus.Pending -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
 
-            // Botones de acción
-            Button(
-                onClick = {
-                    // Solicitar permiso de FINE LOCATION (GPS precisión alta)
-                    requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = permissionStatus !is PermissionStatus.Granted
-            ) {
-                Text("Solicitar Permiso de Ubicación Precisa")
-            }
+    val icon = when (status) {
+        is PermissionStatus.Granted -> Icons.Default.MyLocation
+        is PermissionStatus.Denied -> Icons.Default.LocationOff
+        is PermissionStatus.Pending -> Icons.Default.MyLocation
+    }
 
-            Button(
-                onClick = {
-                    // Solicitar permiso de COARSE LOCATION (ubicación aproximada)
-                    requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = permissionStatus !is PermissionStatus.Granted
-            ) {
-                Text("Solicitar Permiso de Ubicación Aproximada")
-            }
-
-            if (permissionStatus is PermissionStatus.Denied) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = containerColor)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = contentColor,
+                modifier = Modifier.size(32.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
                 Text(
-                    text = "Nota: Si deseas cambiar de opinión, abre Configuración > Aplicaciones > PC01_MOVILES > Permisos.",
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 12.dp),
-                    color = MaterialTheme.colorScheme.outline
+                    text = when (status) {
+                        is PermissionStatus.Granted -> "✓ Acceso Concedido"
+                        is PermissionStatus.Denied -> "✗ Acceso Denegado"
+                        is PermissionStatus.Pending -> "⏳ Pendiente"
+                    },
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = contentColor
                 )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
-                onClick = onBackClick,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = stringResource(R.string.back_to_menu))
+                Text(
+                    text = when (status) {
+                        is PermissionStatus.Granted -> "Asistencia personalizada activada."
+                        is PermissionStatus.Denied -> "Cambia esto en Configuración."
+                        is PermissionStatus.Pending -> "Solicita acceso para continuar."
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = contentColor.copy(alpha = 0.8f)
+                )
             }
         }
     }
