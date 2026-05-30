@@ -5,6 +5,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.pc01movilesmarin24100309villegas24100370.screens.BaggageCalculatorScreen
+import com.example.pc01movilesmarin24100309villegas24100370.screens.BudgetPlannerScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.FeatureScreen
 import com.example.pc01movilesmarin24100309villegas24100370.screens.MainMenuScreen
 
@@ -34,15 +36,13 @@ fun AppNavHost() {
         }
 
         composable(AppRoute.BaggageCalculator) {
-            FeatureScreen(
-                title = stringResource(R.string.menu_baggage_calculator),
+            BaggageCalculatorScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
 
         composable(AppRoute.BudgetPlanner) {
-            FeatureScreen(
-                title = stringResource(R.string.menu_budget_planner),
+            BudgetPlannerScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
