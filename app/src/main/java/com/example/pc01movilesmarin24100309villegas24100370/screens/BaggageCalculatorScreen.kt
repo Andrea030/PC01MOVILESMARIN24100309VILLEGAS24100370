@@ -1,5 +1,15 @@
 package com.example.pc01movilesmarin24100309villegas24100370.screens
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +44,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BaggageCalculatorScreen(onBackClick: () -> Unit) {
 import com.example.pc01movilesmarin24100309villegas24100370.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +67,12 @@ fun BaggageCalculatorScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                title = { Text("Calculadora de Equipaje") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Regresar")
+                    }
+                }
                 title = { Text(text = "Calculadora de Equipaje") }
             )
         }
@@ -65,6 +85,7 @@ fun BaggageCalculatorScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Ingresar: Peso de la maleta
             OutlinedTextField(
                 value = weightInput,
                 onValueChange = {
@@ -83,6 +104,7 @@ fun BaggageCalculatorScreen(
                 }
             )
 
+            // Ingresar: Tipo de vuelo
             Text(
                 text = "Tipo de vuelo",
                 fontWeight = FontWeight.SemiBold,
@@ -115,6 +137,7 @@ fun BaggageCalculatorScreen(
                 }
             }
 
+            // Botón Calcular
             Button(
                 onClick = {
                     val weight = weightInput.toDoubleOrNull()
@@ -145,11 +168,21 @@ fun BaggageCalculatorScreen(
                         }
                     }
                 },
+                modifier = Modifier.fillMaxWidth().height(56.dp)
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Calcular")
             }
 
+            // Resultados
+            if (resultMessage != null) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (isExceeded)
+                            MaterialTheme.colorScheme.errorContainer
+                        else
+                            MaterialTheme.colorScheme.primaryContainer
             if (resultMessage != null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Card(
@@ -180,6 +213,9 @@ fun BaggageCalculatorScreen(
                     }
                 }
             }
+        }
+    }
+}
 
             Spacer(modifier = Modifier.height(8.dp))
             Button(
